@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
-	"bufio"
+	"github.com/PaesslerAG/gval"
 )
 
 func main()  {
+	vars := map[string]interface{}{}
+
 	scanner := bufio.NewScanner(os.Stdin)
 	for true {
 		fmt.Print("> ")
@@ -14,6 +17,10 @@ func main()  {
 			break
 		}
 		text := scanner.Text()
-		fmt.Println(text)
+		value, err := gval.Evaluate(text, vars)
+		if err != nil {
+		    fmt.Println(err)
+		}
+		fmt.Println(value)
 	}
 }
