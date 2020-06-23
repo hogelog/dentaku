@@ -6,7 +6,7 @@ import (
 	"github.com/chzyer/readline"
 )
 
-func main()  {
+func main() {
 	vars := map[string]interface{}{}
 
 	rl, err := readline.New("> ")
@@ -22,7 +22,7 @@ func main()  {
 		}
 		value, err := gval.Evaluate(text, vars)
 		if err != nil {
-		    fmt.Println(err)
+			fmt.Println(err)
 		}
 		fmt.Println(value)
 	}
