@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/PaesslerAG/gval"
 	"github.com/chzyer/readline"
+	"io"
 	"strings"
 )
 
@@ -17,12 +18,12 @@ func main() {
 
 	for {
 		line, err := rl.Readline()
-		if err != nil {
-			panic(err)
-		}
-
-		if line == "exit" || line == "" {
+		if err == io.EOF || line == "exit" {
 			break
+		} else if err != nil {
+			panic(err)
+		} else if line == "" {
+			continue
 		}
 
 		line = strings.ReplaceAll(line, ",", "")
