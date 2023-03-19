@@ -1,9 +1,13 @@
 module github.com/hogelog/dentaku
 
-go 1.14
+go 1.20
 
 require (
-	github.com/PaesslerAG/gval v1.0.1
-	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
-	golang.org/x/sys v0.0.0-20200622214017-ed371f2e16b4 // indirect
+	github.com/PaesslerAG/gval v1.2.2
+	github.com/chzyer/readline v1.5.1
+)
+
+require (
+	github.com/shopspring/decimal v1.3.1 // indirect
+	golang.org/x/sys v0.6.0 // indirect
 )

@@ -4,26 +4,35 @@ import (
 	"fmt"
 	"github.com/PaesslerAG/gval"
 	"github.com/chzyer/readline"
+	"strings"
 )
 
 func main() {
 	vars := map[string]interface{}{}
-
-	rl, err := readline.New("> ")
+	rl, err := readline.New("dentaku> ")
 	if err != nil {
 		panic(err)
 	}
 	defer rl.Close()
 
 	for {
-		text, err := rl.Readline()
+		line, err := rl.Readline()
 		if err != nil {
+			panic(err)
+		}
+
+		if line == "exit" || line == "" {
 			break
 		}
-		value, err := gval.Evaluate(text, vars)
+
+		line = strings.ReplaceAll(line, ",", "")
+
+		value, err := gval.Evaluate(line, vars)
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
+
 		fmt.Println(value)
 	}
 }
