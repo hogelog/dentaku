@@ -51,7 +51,7 @@ func main() {
 			continue
 		}
 
-		fmt.Println(value)
+		fmt.Printf("%.2f\n", value)
 	}
 }
 
