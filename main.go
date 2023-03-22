@@ -55,6 +55,15 @@ func main() {
 	}
 }
 
+var exclude_chars = []string{
+	",",
+	"$",
+	"¥",
+}
+
 func normalize(line string) string {
-	return strings.ReplaceAll(line, ",", "")
+	for _, ch := range exclude_chars {
+		line = strings.ReplaceAll(line, ch, "")
+	}
+	return line
 }
