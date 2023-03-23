@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/PaesslerAG/gval"
+	"github.com/atotto/clipboard"
 	"github.com/chzyer/readline"
 	"io"
 	"os"
@@ -35,6 +36,12 @@ func main() {
 	}
 	defer rl.Close()
 
+	copyFunc := gval.Function("copy", func(args ...interface{}) (interface{}, error) {
+		val := args[0].(float64)
+		err := clipboard.WriteAll(fmt.Sprintf("%.2f", val))
+		return val, err
+	})
+
 	for {
 		line, err := rl.Readline()
 		if err == io.EOF || line == "exit" {
@@ -45,7 +52,7 @@ func main() {
 			continue
 		}
 
-		value, err := gval.Evaluate(normalize(line), vars)
+		value, err := gval.Evaluate(normalize(line), vars, copyFunc)
 		if err != nil {
 			fmt.Println(err)
 			continue
