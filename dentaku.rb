@@ -6,17 +6,17 @@ require "fileutils"
 require "prism"
 
 class Dentaku
-  HSITORY_FILE = File.expand_path("~/.config/dentaku/history")
+  HISITORY_FILE = File.expand_path("~/.config/dentaku/history")
 
   def self.run
     new.run
   end
 
   def initialize
-    FileUtils.mkdir_p(File.dirname(HSITORY_FILE))
+    FileUtils.mkdir_p(File.dirname(HISITORY_FILE))
 
-    if File.exist?(HSITORY_FILE)
-      File.readlines(HSITORY_FILE).each do |line|
+    if File.exist?(HISITORY_FILE)
+      File.readlines(HISITORY_FILE).each do |line|
         Reline::HISTORY << line.chomp
       end
     end
@@ -36,7 +36,7 @@ class Dentaku
         end
       end
     ensure
-      File.open(HSITORY_FILE, "w") do |f|
+      File.open(HISITORY_FILE, "w") do |f|
         Reline::HISTORY.to_a.each do |line|
           f.puts(line)
         end
