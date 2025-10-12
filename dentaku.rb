@@ -91,6 +91,8 @@ class Dentaku
         eval_node(node.receiver) / eval_node(node.arguments.arguments.first)
       when :_1
         @result
+      when :-@
+        -eval_node(node.receiver)
       else
         raise "Unsupported operator: #{node.name}"
       end

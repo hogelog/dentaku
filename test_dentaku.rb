@@ -121,4 +121,9 @@ class TestDentaku < Minitest::Test
     result = @dentaku.calc("10.0 / 3.0")
     assert_equal "3.33", result
   end
+
+  def test_minus
+    result = @dentaku.calc("-(1+1)")
+    assert_equal "-2", result
+  end
 end
