@@ -112,7 +112,7 @@ class Dentaku
       if val.frac.zero?
         val.to_i.to_s
       else
-        "%.2f" % val.to_f
+        val.round(2).to_s("F")
       end
     else
       val.to_s
