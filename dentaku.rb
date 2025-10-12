@@ -46,23 +46,23 @@ class Dentaku
 
   def calc(line)
     chunks = line.split(/\s*\|\s*/)
-    result = 0
+    @result = 0
     chunks.each do |chunk|
       case chunk
       when "copy"
-        copy(result)
+        copy(@result)
       else
-        result = evaluate(normalize_number(chunk))
+        @result = evaluate(normalize_number(chunk))
       end
     end
-    result
+    @result
   end
 
-  def evaluate(expr)
-    result = Prism.parse(expr)
-    raise "Parse error" unless result.success?
+  def evaluate(chunk)
+    exp = Prism.parse(chunk)
+    raise "Parse error" unless exp.success?
 
-    statements = result.value.statements.body
+    statements = exp.value.statements.body
     raise "Empty expression" if statements.empty?
 
     eval_node(statements.first)
@@ -88,6 +88,8 @@ class Dentaku
         eval_node(node.receiver) * eval_node(node.arguments.arguments.first)
       when :/
         eval_node(node.receiver) / eval_node(node.arguments.arguments.first)
+      when :_1
+        @result
       else
         raise "Unsupported operator: #{node.name}"
       end
