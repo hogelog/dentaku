@@ -14,7 +14,7 @@ class Dentaku
 
   def initialize
     FileUtils.mkdir_p(File.dirname(HSITORY_FILE))
-  
+
     if File.exist?(HSITORY_FILE)
       File.readlines(HSITORY_FILE).each do |line|
         Reline::HISTORY << line.chomp
@@ -30,7 +30,7 @@ class Dentaku
   
         begin
           result = calc(line)
-          puts "=> #{to_print(result)}"
+          puts "=> #{result}"
         rescue Exception => e
           puts "Error: #{e.message}"
         end
@@ -55,7 +55,7 @@ class Dentaku
         @result = evaluate(normalize_number(chunk))
       end
     end
-    @result
+    to_print(@result)
   end
 
   def evaluate(chunk)
