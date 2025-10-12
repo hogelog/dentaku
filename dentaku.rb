@@ -21,6 +21,8 @@ class Dentaku
         Reline::HISTORY << line.chomp
       end
     end
+
+    @prev_result = 0
   end
  
   def run
@@ -56,6 +58,7 @@ class Dentaku
         @result = evaluate(normalize_number(chunk))
       end
     end
+    @prev_result = @result
     to_print(@result)
   end
 
@@ -93,6 +96,8 @@ class Dentaku
         @result
       when :-@
         -eval_node(node.receiver)
+      when :_
+        @prev_result
       else
         raise "Unsupported operator: #{node.name}"
       end
