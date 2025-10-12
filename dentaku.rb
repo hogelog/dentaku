@@ -4,6 +4,7 @@ require "bigdecimal"
 require "reline"
 require "fileutils"
 require "prism"
+require "irb/color"
 
 class Dentaku
   HISITORY_FILE = File.expand_path("~/.config/dentaku/history")
@@ -30,9 +31,9 @@ class Dentaku
   
         begin
           result = calc(line)
-          puts "=> #{result}"
+          puts "=> #{colorize_result(result)}"
         rescue Exception => e
-          puts "Error: #{e.message}"
+          puts "#{IRB::Color.colorize("Error:", [:RED])} #{e.message}"
         end
       end
     ensure
@@ -117,6 +118,11 @@ class Dentaku
     else
       val.to_s
     end
+  end
+
+  def colorize_result(result)
+    return result if !$stdout.tty? || ENV["NO_COLOR"]
+    IRB::Color.colorize_code(result, colorable: true)
   end
 end
 
