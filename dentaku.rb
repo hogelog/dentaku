@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require "bigdecimal"
 require "reline"
 require "fileutils"
 require "prism"
@@ -29,7 +30,7 @@ class Dentaku
   
         begin
           result = calc(line)
-          puts "=> #{result}"
+          puts "=> #{to_print(result)}"
         rescue Exception => e
           puts "Error: #{e.message}"
         end
@@ -74,7 +75,7 @@ class Dentaku
     when Prism::IntegerNode
       node.value
     when Prism::FloatNode
-      node.value
+      BigDecimal(node.slice)
     when Prism::ParenthesesNode
       eval_node(node.body.body.first)
     when Prism::CallNode
@@ -100,7 +101,20 @@ class Dentaku
   end
 
   def copy(val)
-    IO.popen("pbcopy", "wb") { |io| io.write val; io.close_write }
+    IO.popen("pbcopy", "wb") { |io| io.write to_print(val); io.close_write }
+  end
+
+  def to_print(val)
+    case val
+    when BigDecimal
+      if val.frac.zero?
+        val.to_i.to_s
+      else
+        "%.2f" % val.to_f
+      end
+    else
+      val.to_s
+    end
   end
 end
 
