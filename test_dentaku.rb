@@ -132,4 +132,8 @@ class TestDentaku < Minitest::Test
     result = @dentaku.calc("10*10")
     assert_equal "1000", @dentaku.calc("_*10")
   end
+
+  def test_multiple_nesting
+    assert_equal "26", @dentaku.calc("((5 * (3 + 2)) - (4 / 2)) + 3")
+  end
 end
