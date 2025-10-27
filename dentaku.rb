@@ -54,6 +54,16 @@ class Dentaku
       case chunk
       when "copy"
         copy(@result)
+      when "comma"
+        @result = comma(@result)
+      when "usd"
+        @result = usd(@result)
+      when "jpy"
+        @result = jpy(@result)
+      when "usdtojpy"
+        @result = jpy(@result * 150)
+      when "jpytousd"
+        @result = usd(@result / 150)
       else
         @result = evaluate(normalize_number(chunk))
       end
@@ -114,6 +124,29 @@ class Dentaku
     IO.popen("pbcopy", "wb") { |io| io.write to_print(val); io.close_write }
   end
 
+  def comma(val)
+    case val
+    when BigDecimal
+      if val.frac.zero?
+        val.to_i.gsub(/(\d)(?=(\d{3})+$)/, '\1,')
+      else
+        val.round(2).to_s("F").gsub(/(\d)(?=(\d{3})+\.)/, '\1,')
+      end
+    when Integer
+      val.to_s.gsub(/(\d)(?=(\d{3})+$)/, '\1,')
+    else
+      val.to_s
+    end
+  end
+
+  def usd(val)
+    "$#{comma(val)}"
+  end
+
+  def jpy(val)
+    "¥#{comma(val)}"
+  end
+
   def to_print(val)
     case val
     when BigDecimal
@@ -129,7 +162,12 @@ class Dentaku
 
   def colorize_result(result)
     return result if !$stdout.tty? || ENV["NO_COLOR"]
-    IRB::Color.colorize_code(result, colorable: true)
+    case result
+    when Numeric
+      IRB::Color.colorize_code(result, colorable: true)
+    else
+      IRB::Color.colorize(result, [:BOLD, :BLUE])
+    end
   end
 end
 
