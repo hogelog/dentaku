@@ -25,7 +25,7 @@ class TestDentaku < Minitest::Test
   end
 
   def test_integer_division
-    assert_equal "2", @dentaku.calc("5 / 2")
+    assert_equal "2.5", @dentaku.calc("5 / 2")
   end
 
   def test_operator_precedence_multiplication_first
@@ -135,5 +135,29 @@ class TestDentaku < Minitest::Test
 
   def test_multiple_nesting
     assert_equal "26", @dentaku.calc("((5 * (3 + 2)) - (4 / 2)) + 3")
+  end
+
+  def test_comma
+    assert_equal "1,000", @dentaku.calc("1000 | comma")
+  end
+
+  def test_comma_with_decimal
+    assert_equal "1,234.57", @dentaku.calc("1234.567 | comma")
+  end
+
+  def test_usd
+    assert_equal "$1,000", @dentaku.calc("1000 | usd")
+  end
+
+  def test_jpy
+    assert_equal "¥1,000", @dentaku.calc("1000 | jpy")
+  end
+
+  def test_jpytousd
+    assert_equal "$100", @dentaku.calc("15000 | jpytousd")
+  end
+
+  def test_usdtojpy
+    assert_equal "¥15,000", @dentaku.calc("100 | usdtojpy")
   end
 end

@@ -87,7 +87,7 @@ class Dentaku
   def eval_node(node)
     case node
     when Prism::IntegerNode
-      node.value
+      BigDecimal(node.value)
     when Prism::FloatNode
       BigDecimal(node.slice)
     when Prism::ParenthesesNode
@@ -128,12 +128,10 @@ class Dentaku
     case val
     when BigDecimal
       if val.frac.zero?
-        val.to_i.gsub(/(\d)(?=(\d{3})+$)/, '\1,')
+        val.to_i.to_s.gsub(/(\d)(?=(\d{3})+$)/, '\1,')
       else
         val.round(2).to_s("F").gsub(/(\d)(?=(\d{3})+\.)/, '\1,')
       end
-    when Integer
-      val.to_s.gsub(/(\d)(?=(\d{3})+$)/, '\1,')
     else
       val.to_s
     end
